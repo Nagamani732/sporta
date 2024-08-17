@@ -12,7 +12,7 @@
         <module>club</module>
         <module>member</module>
         <module>event</module>
-        <module>api-gateway</module>
+        <module>gateway</module>
         <module>common</module>
         <module>discovery</module>
     </modules>
