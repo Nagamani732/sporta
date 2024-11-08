@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:oracle:thin:@madb_medium?TNS_ADMIN=src/main/resources/wallet
     username: ADMIN
-    password: WElcome123##
+    password: ${PASSWORD}
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
       maximum-pool-size: 10
