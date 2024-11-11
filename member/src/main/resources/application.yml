@@ -14,3 +14,8 @@ spring:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.OracleDialect
+
+
+sendgrid:
+  api-key: ${SENDGRID_API_KEY}
+  from-email: "nagamani732@gmail.com"
