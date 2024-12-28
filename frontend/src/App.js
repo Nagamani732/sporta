@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
+// Access the Environment Variable
+const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+});
+
 const App = () => {
     const [currentPage, setCurrentPage] = useState("home");
     const [members, setMembers] = useState([]);
@@ -15,7 +20,7 @@ const App = () => {
 
     const fetchMembers = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/members");
+            const response = await apiClient.get("/members");
             setMembers(response.data);
         } catch (error) {
             console.error("Error fetching members:", error);
@@ -88,7 +93,7 @@ const AddMemberPage = () => {
         e.preventDefault();
         try {
             const newMember = { name, email, phoneNumber, joinDate };
-            await axios.post("http://localhost:8080/api/members", newMember);
+            await apiClient.post("/members", newMember);
             alert("Member added successfully!");
             setName("");
             setEmail("");
