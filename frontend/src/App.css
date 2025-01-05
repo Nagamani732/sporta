@@ -19,6 +19,17 @@ a {
 
 button {
   cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* App Container */
@@ -125,12 +136,6 @@ form input {
 form button {
   background-color: #4caf50;
   color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
 }
 
 form button:hover {
@@ -162,4 +167,52 @@ table th {
 
 table tr:hover {
   background-color: #f1f1f1;
+}
+
+/* Action Buttons */
+table td button {
+  margin-right: 5px;
+}
+
+table td .edit-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+table td .edit-button:hover {
+  background-color: #1565c0;
+}
+
+table td .delete-button {
+  background-color: #d32f2f;
+  color: white;
+}
+
+table td .delete-button:hover {
+  background-color: #c62828;
+}
+
+/* Editable Table Row */
+table td input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: calc(100% - 16px);
+}
+
+table td .save-button {
+  background-color: #4caf50;
+}
+
+table td .save-button:hover {
+  background-color: #45a049;
+}
+
+table td .cancel-button {
+  background-color: #757575;
+  color: white;
+}
+
+table td .cancel-button:hover {
+  background-color: #616161;
 }

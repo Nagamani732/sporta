@@ -145,34 +145,127 @@ const AddMemberPage = () => {
     );
 };
 
-const ListMembersPage = ({ members }) => (
-    <div>
-        <h2>List of Members</h2>
-        {members.length === 0 ? (
-            <p>No members found. Add some members to see them here.</p>
-        ) : (
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Join Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {members.map((member) => (
-                    <tr key={member.id}>
-                        <td>{member.name}</td>
-                        <td>{member.email}</td>
-                        <td>{member.phoneNumber}</td>
-                        <td>{member.joinDate}</td>
+const ListMembersPage = ({ members }) => {
+    const [editingMember, setEditingMember] = useState(null);
+    const [updatedName, setUpdatedName] = useState("");
+    const [updatedEmail, setUpdatedEmail] = useState("");
+    const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState("");
+    const [updatedJoinDate, setUpdatedJoinDate] = useState("");
+
+    const deleteMember = async (id) => {
+        try {
+            await apiClient.delete(`/members/${id}`);
+            alert("Member deleted successfully!");
+            // Refresh the members list after deletion
+            window.location.reload();
+        } catch (error) {
+            console.error("Error deleting member:", error);
+        }
+    };
+
+    const updateMember = async (id) => {
+        try {
+            const updatedMember = {
+                name: updatedName,
+                email: updatedEmail,
+                phoneNumber: updatedPhoneNumber,
+                joinDate: updatedJoinDate,
+            };
+            await apiClient.put(`/members/${id}`, updatedMember);
+            alert("Member updated successfully!");
+            setEditingMember(null);
+            window.location.reload();
+        } catch (error) {
+            console.error("Error updating member:", error);
+        }
+    };
+
+    const startEditing = (member) => {
+        setEditingMember(member.id);
+        setUpdatedName(member.name);
+        setUpdatedEmail(member.email);
+        setUpdatedPhoneNumber(member.phoneNumber);
+        setUpdatedJoinDate(member.joinDate);
+    };
+
+    const cancelEditing = () => {
+        setEditingMember(null);
+    };
+
+    return (
+        <div>
+            <h2>List of Members</h2>
+            {members.length === 0 ? (
+                <p>No members found. Add some members to see them here.</p>
+            ) : (
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Join Date</th>
+                        <th>Actions</th>
                     </tr>
-                ))}
-                </tbody>
-            </table>
-        )}
-    </div>
-);
+                    </thead>
+                    <tbody>
+                    {members.map((member) => (
+                        <tr key={member.id}>
+                            {editingMember === member.id ? (
+                                <>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            value={updatedName}
+                                            onChange={(e) => setUpdatedName(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="email"
+                                            value={updatedEmail}
+                                            onChange={(e) => setUpdatedEmail(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="tel"
+                                            value={updatedPhoneNumber}
+                                            onChange={(e) => setUpdatedPhoneNumber(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="date"
+                                            value={updatedJoinDate}
+                                            onChange={(e) => setUpdatedJoinDate(e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <button onClick={() => updateMember(member.id)}>Save</button>
+                                        <button onClick={cancelEditing}>Cancel</button>
+                                    </td>
+                                </>
+                            ) : (
+                                <>
+                                    <td>{member.name}</td>
+                                    <td>{member.email}</td>
+                                    <td>{member.phoneNumber}</td>
+                                    <td>{member.joinDate}</td>
+                                    <td>
+                                        <button onClick={() => startEditing(member)}>Edit</button>
+                                        <button onClick={() => deleteMember(member.id)}>Delete</button>
+                                    </td>
+                                </>
+                            )}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            )}
+        </div>
+    );
+};
+
 
 export default App;
